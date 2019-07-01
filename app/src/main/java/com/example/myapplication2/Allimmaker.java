@@ -11,15 +11,23 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+
+import android.view.View;
+
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.app.NotificationCompat;
 
+import androidx.core.app.NotificationManagerCompat;
+
+
 public class Allimmaker extends Activity {
 
 
     private static Notification.Builder builder;
+    final private Context mcontext = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,21 +38,49 @@ public class Allimmaker extends Activity {
         Intent intent = getIntent();
         int data = intent.getIntExtra("id",0);
 
-        TextView reset = (TextView) findViewById(R.id.timetostart);
-        DBtodoHelper db = new DBtodoHelper(this);
-        Todo todo = db.getTodo(data);
-        int hour = todo.getHour();
-        int minute = todo.getMinute();
+
+        TextView timetostart = (TextView) findViewById(R.id.timetostart);
+        final DBtodoHelper db = new DBtodoHelper(this);
+        final Todo todo = db.getTodo(data);
+        todo.setSwitching("false");
+        db.updateTodo(todo);
+        String h = String.valueOf(todo.getHour());
+        String m = String.valueOf(todo.getMinute());
+        if(String.valueOf(todo.getMinute()).length()==1){
+            m = "0"+m;
+        }
         String contents = todo.getContents();
-        reset.setText("시간이 벌써 " +hour+"시 "+minute+"분이에요\n" + contents + "을(를) 할 시간이에요! ");
+        timetostart.setText("시간이 벌써 " +h+"시 "+m+"분이에요\n" + contents + "을(를) 할 시간이에요! ");
+
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
 
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle("Todo : "+ contents);
-        builder.setContentText("push 알림을 삭제하려면 터지하세요");
+        builder.setContentText("push 알림을 삭제하려면 터치하세요");
         builder.setColor(Color.RED);
+
+        Button timeDelay = (Button) findViewById(R.id.timeDelayBtn);
+        timeDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NotificationManagerCompat.from(mcontext).cancel(todo.getId());
+                Intent notiIconClickIntent = new Intent(mcontext, MainActivity.class);
+                notiIconClickIntent.putExtra("particularFragment", "notiIntent");
+                startActivity(notiIconClickIntent);
+                finish();
+            }
+        });
+
+        Button reset = (Button) findViewById(R.id.reset);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
 
         // 사용자가 탭을 클릭하면 이동
@@ -70,15 +106,14 @@ public class Allimmaker extends Activity {
 
         // id값은
         // 정의해야하는 각 알림의 고유한 int값
-        notificationManager.notify(1, builder.build());
+
+        notificationManager.notify(todo.getId(), builder.build());
     }
 
 
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(Allimmaker.this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 }

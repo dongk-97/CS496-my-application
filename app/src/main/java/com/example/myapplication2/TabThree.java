@@ -1,6 +1,9 @@
 package com.example.myapplication2;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -18,11 +21,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class TabThree extends Fragment {
     private ArrayList<Todo> ArrayListOfEdit = new ArrayList<>();
@@ -35,11 +41,32 @@ public class TabThree extends Fragment {
 
         final DBtodoHelper db = new DBtodoHelper(getContext());
         ArrayListOfEdit= db.getAllTodos();
-        final RecyclerviewTodoAdapter recyclerTodoAdapter = new RecyclerviewTodoAdapter(getActivity(),getContext(),fragment, ArrayListOfEdit);
+        RecyclerviewTodoAdapter recyclerTodoAdapter = new RecyclerviewTodoAdapter(getActivity(),getContext(),fragment, ArrayListOfEdit);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_tab3);
         recyclerView.setAdapter(recyclerTodoAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        Button allDel = (Button) view.findViewById(R.id.alldel);
+        allDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayListOfEdit = db.getAllTodos();
+                for(int i =0; i<ArrayListOfEdit.size(); i++){
+                    db.deleteTodo(ArrayListOfEdit.get(i));
+                    AlarmManager alarm_manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+                    Intent intent = new Intent(getContext(), Allimmaker.class);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),ArrayListOfEdit.get(i).getId(),intent ,PendingIntent.FLAG_UPDATE_CURRENT);
+                    if (pendingIntent != null)
+                    { alarm_manager.cancel(pendingIntent);
+                        pendingIntent.cancel();
+                    }
+
+                }
+                FragmentTransaction ft = fragment.getFragmentManager().beginTransaction();
+                ft.detach(fragment).attach(fragment).commit();
+
+            }
+        });
 
 
         Button buttonInsert = (Button) view.findViewById(R.id.addTodo);

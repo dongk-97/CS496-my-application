@@ -51,7 +51,7 @@
         android:layout_below="@id/reset"
         android:text = "+"
         android:textSize="20sp"
-        android:id="@+id/addContact"
+        android:id="@+id/timeDelayBtn"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/background_btnrounding"

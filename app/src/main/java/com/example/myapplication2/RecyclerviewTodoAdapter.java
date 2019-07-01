@@ -102,7 +102,12 @@ public class RecyclerviewTodoAdapter extends RecyclerView.Adapter<RecyclerviewTo
 
         if(arrayListOfTodo.get(position).getSwitching().equals("true")){
             alarm.setChecked(true);
-            txtClock.setText(todo.getHour()+":"+todo.getMinute());
+            String h = String.valueOf(todo.getHour());
+            String m = String.valueOf(todo.getMinute());
+            if(String.valueOf(todo.getMinute()).length()==1){
+                m = "0"+m;
+            }
+            txtClock.setText(h+":"+m);
         }else{
             alarm.setChecked(false);
         }

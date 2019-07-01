@@ -2,11 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_tab3"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="635dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_tab3"
+            android:layout_width="match_parent"
+            android:layout_height="635dp" />
+
+
+    </RelativeLayout>
+
 
 
     <Button
@@ -19,8 +25,20 @@
         android:id="@+id/addTodo"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/background_btnrounding"
+        android:background="@drawable/background_btnrounding_2"
         />
+
+    <Button
+        android:id="@+id/alldel"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="19dp"
+        android:layout_toLeftOf="@+id/addTodo"
+        android:background="@drawable/background_btnrounding"
+        android:text="X"
+        android:textSize="15sp"></Button>
 
 
 </RelativeLayout>
