@@ -28,10 +28,19 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/profileImageInProfile"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/backImage" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignBottom="@id/profileImageInProfile"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="10dp"
-        android:id="@+id/backImage" />
+        android:id="@+id/messageImage" />
 
 
     <ScrollView

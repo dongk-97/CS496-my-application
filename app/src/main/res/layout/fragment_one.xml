@@ -12,7 +12,8 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:hint="Search"
-            android:id="@+id/searchEdit"/>
+            android:id="@+id/searchEdit"
+            />
 
 
 
@@ -38,18 +39,15 @@
         android:background="@drawable/background_btnrounding"
         />
 
-    <Button
+    <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_above="@id/addContact"
         android:layout_alignRight="@id/addContact"
-        android:text = "->"
         android:textSize="15sp"
         android:id="@+id/loadingContacts"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-
-        android:background="@drawable/background_btnrounding_2"
         />
 
 </RelativeLayout>

@@ -73,8 +73,29 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        ImageView message = (ImageView) findViewById(R.id.messageImage);
+        message.setImageResource(R.drawable.message);
+        message.setBackground(new ShapeDrawable(new OvalShape()));
+        message.setClipToOutline(true);
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tel = "smsto:" + contact.getPhoneNumber();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(tel));
+                startActivity(intent);
+
+            }
+        });
+
+
+
+
+
         ImageView backImage = (ImageView) findViewById(R.id.backImage);
-        backImage.setImageResource(R.drawable.bluearrow);
+        backImage.setImageResource(R.drawable.roundarrow);
         backImage.setBackground(new ShapeDrawable(new OvalShape()));
         backImage.setClipToOutline(true);
 

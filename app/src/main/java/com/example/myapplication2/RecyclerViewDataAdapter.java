@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,13 +35,17 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     final private Context mcontext;
     private Activity activity;
     private ArrayList<Contact> searchList = new ArrayList<>();
+    private Fragment fragment;
+
+
 
 
     //Adapter 초기화 및 생성자로 받은 데이터기반으로 Adapter 내 데이터 세팅
-    public RecyclerViewDataAdapter(Activity activity, Context context, ArrayList<Contact> arrayListOfcontactinfo){
+    public RecyclerViewDataAdapter(Activity activity, Context context, Fragment fragment, ArrayList<Contact> arrayListOfcontactinfo){
         this.mcontext = context;
         this.arrayListOfcontactinfo = arrayListOfcontactinfo;
         this.activity = activity;
+        this.fragment = fragment;
     }
 
     //ViewHolder가 초기화 될 때 혹은 ViewHolder를 초기화 할 때 실행되는 메서드
@@ -189,9 +195,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                                 arrayListOfcontactinfo=db.getAllContacts();
                                 dialog.dismiss();
 
-                                Intent intent = new Intent(activity, MainActivity.class);
-                                mcontext.startActivity(intent);
-                                activity.finish();
+                                FragmentTransaction ft = fragment.getFragmentManager().beginTransaction();
+                                ft.detach(fragment).attach(fragment).commit();
                             }
                         });
 
@@ -204,10 +209,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
                         db.deleteContact(arrayListOfcontactinfo.get(getAdapterPosition()));
                         arrayListOfcontactinfo=db.getAllContacts();
-
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        mcontext.startActivity(intent);
-                        activity.finish();
+                        FragmentTransaction ft = fragment.getFragmentManager().beginTransaction();
+                        ft.detach(fragment).attach(fragment).commit();
 
                         break;
                 }
@@ -219,15 +222,18 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     }
 
     public void filter(String charText) {
+        DBcontactHelper db = new DBcontactHelper(mcontext);
         charText = charText.toLowerCase(Locale.getDefault());
+        searchList.clear();
+        searchList.addAll(db.getAllContacts());
         arrayListOfcontactinfo.clear();
         if (charText.length() == 0){
-            arrayListOfcontactinfo.addAll(searchList);
+            arrayListOfcontactinfo.addAll(db.getAllContacts());
         } else{
             for (Contact contact : searchList){
                 String name = contact.getName();
-                if (name.toLowerCase().contains(charText)){
-                    arrayListOfcontactinfo.add(contact);
+                    if (name.toLowerCase().contains(charText)){
+                        arrayListOfcontactinfo.add(contact);
                 }
             }
         }

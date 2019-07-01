@@ -36,4 +36,8 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return counttab;
     }
+
+    public void refresh(){
+        notifyDataSetChanged();
+    }
 }

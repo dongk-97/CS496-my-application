@@ -30,15 +30,18 @@ public class TabOne extends Fragment{
     private ArrayList<Contact> ArrayListOfEdit = new ArrayList<>();
     @Nullable
     @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_one, container, false);
+        final Fragment fragment = this;
 
         final DBcontactHelper db = new DBcontactHelper(getContext());
         ArrayListOfEdit=db.getAllContacts();
-        final RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(), ArrayListOfEdit);
+        final RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(), fragment, ArrayListOfEdit);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(recyclerDataAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        
 
 
         final EditText search = (EditText) view.findViewById(R.id.searchEdit);
@@ -62,7 +65,10 @@ public class TabOne extends Fragment{
         });
 
 
-        Button buttonLoading = (Button) view.findViewById(R.id.loadingContacts);
+        ImageView buttonLoading = (ImageView) view.findViewById(R.id.loadingContacts);
+        buttonLoading.setImageResource(R.drawable.down);
+        buttonLoading.setBackground(new ShapeDrawable(new OvalShape()));
+        buttonLoading.setClipToOutline(true);
         buttonLoading.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -92,7 +98,7 @@ public class TabOne extends Fragment{
                     db.addContact(contact);
                 } while (c.moveToNext());
                 ArrayListOfEdit=db.getAllContacts();
-                RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(),ArrayListOfEdit);
+                RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(),fragment,ArrayListOfEdit);
                 RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
                 recyclerView.setAdapter(recyclerDataAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -100,7 +106,6 @@ public class TabOne extends Fragment{
             }
 
         });
-
 
 
 
@@ -139,7 +144,7 @@ public class TabOne extends Fragment{
                         db.addContact(contact);
                         ArrayListOfEdit=db.getAllContacts();
                         dialog.dismiss();
-                        RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(),ArrayListOfEdit);
+                        RecyclerViewDataAdapter recyclerDataAdapter = new RecyclerViewDataAdapter(getActivity(),getContext(),fragment,ArrayListOfEdit);
                         RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
                         recyclerView.setAdapter(recyclerDataAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

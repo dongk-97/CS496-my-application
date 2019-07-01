@@ -1,15 +1,23 @@
 package com.example.myapplication2;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.TabActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTabHost;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -23,7 +31,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
     private ViewPager viewPager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -32,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         tedPermission();
 
         // Adding Toolbar to the activity
@@ -39,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Initializing the TabLayout
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab Two"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab Three"));
@@ -52,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        String str = getIntent().getStringExtra("particularFragment");
+
 
         // Set TabSelectedListener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -96,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS, Manifest.permission.CALL_PHONE )
                 .check();
     }
+
+
+
 
 
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/kakaoimage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/muji"
+        />
+
+    <TextView
+        android:id="@+id/timetostart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kakaoimage"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="#212121"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="x"
+        android:background="@drawable/background_rounding"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timetostart"
+        android:layout_marginTop="10dp"
+        android:id="@+id/reset"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reset"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="시작시간 늦추러 가기"
+        android:textColor="#212121"
+        android:textSize="15sp"
+        android:id="@+id/timeDelay"/>
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@id/timeDelay"
+        android:layout_below="@id/reset"
+        android:text = "+"
+        android:textSize="20sp"
+        android:id="@+id/addContact"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_btnrounding"
+        />
+
+
+</RelativeLayout>
