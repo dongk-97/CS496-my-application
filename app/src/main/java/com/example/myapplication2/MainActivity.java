@@ -30,6 +30,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static Activity _Main_Activity;
 
     private ViewPager viewPager;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        _Main_Activity = this;
 
 
 
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         // Initializing the TabLayout
         TabLayout tabLayout= (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab Two"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab Three"));
+        tabLayout.addTab(tabLayout.newTab().setText("Image"));
+        tabLayout.addTab(tabLayout.newTab().setText("Todo"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // Initializing ViewPager

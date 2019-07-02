@@ -27,6 +27,7 @@ public class Allimmaker extends Activity {
 
     private static Notification.Builder builder;
     final private Context mcontext = this;
+    private Todo todo;
 
 
     @Override
@@ -41,7 +42,7 @@ public class Allimmaker extends Activity {
 
         TextView timetostart = (TextView) findViewById(R.id.timetostart);
         final DBtodoHelper db = new DBtodoHelper(this);
-        final Todo todo = db.getTodo(data);
+        todo = db.getTodo(data);
         todo.setSwitching("false");
         db.updateTodo(todo);
         String h = String.valueOf(todo.getHour());
@@ -54,39 +55,19 @@ public class Allimmaker extends Activity {
 
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "default");
 
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentTitle("Todo : "+ contents);
         builder.setContentText("push 알림을 삭제하려면 터치하세요");
         builder.setColor(Color.RED);
 
-        Button timeDelay = (Button) findViewById(R.id.timeDelayBtn);
-        timeDelay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NotificationManagerCompat.from(mcontext).cancel(todo.getId());
-                Intent notiIconClickIntent = new Intent(mcontext, MainActivity.class);
-                notiIconClickIntent.putExtra("particularFragment", "notiIntent");
-                startActivity(notiIconClickIntent);
-                finish();
-            }
-        });
-
-        Button reset = (Button) findViewById(R.id.reset);
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
 
 
         // 사용자가 탭을 클릭하면 이동
+        builder.setAutoCancel(true);
         Intent notiIconClickIntent = new Intent(this, MainActivity.class);
-        notiIconClickIntent .putExtra("particularFragment", "notiIntent");
-
+        notiIconClickIntent.putExtra("particularFragment", "notiIntent");
         notiIconClickIntent .setAction(Intent.ACTION_MAIN);
         notiIconClickIntent .addCategory(Intent.CATEGORY_LAUNCHER);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(Allimmaker.this);
@@ -98,7 +79,7 @@ public class Allimmaker extends Activity {
         builder.setContentIntent(pendingIntent);
 
         // 알림 표시
-        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(new NotificationChannel("default", "기본 채널", NotificationManager.IMPORTANCE_DEFAULT));
         }
@@ -108,12 +89,42 @@ public class Allimmaker extends Activity {
         // 정의해야하는 각 알림의 고유한 int값
 
         notificationManager.notify(todo.getId(), builder.build());
+
+
+
+        Button timeDelay = (Button) findViewById(R.id.timeDelayBtn);
+        timeDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notificationManager.cancel(todo.getId());
+                NotificationManagerCompat.from(mcontext).cancel(todo.getId());
+                MainActivity MA = (MainActivity) MainActivity._Main_Activity;
+                MA.finish();
+                Intent notiIconClickIntent = new Intent(mcontext, MainActivity.class);
+                notiIconClickIntent.putExtra("particularFragment", "notiIntent");
+                startActivity(notiIconClickIntent);
+                finish();
+            }
+        });
+
+        Button reset = (Button) findViewById(R.id.reset);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notificationManager.cancel(todo.getId());
+                MainActivity MA = (MainActivity) MainActivity._Main_Activity;
+                MA.finish();
+                finish();
+            }
+        });
     }
 
 
 
     @Override
     public void onBackPressed() {
+        final NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(todo.getId());
         finish();
     }
 }
